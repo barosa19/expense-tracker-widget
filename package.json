@@ -1,0 +1,16 @@
+{
+  "name": "expense-tracker-widget",
+  "version": "1.0.0",
+  "description": "A responsive Expense Tracker Widget where users can add, view, and categorize expenses.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\" ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
