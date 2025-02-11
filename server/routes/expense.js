@@ -2,10 +2,40 @@ const express = require("express")
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
 
-let expenses = []
+let expenses = [
+    {
+      id: 1,
+      name: "Publix",
+      amount: 12.99,
+      category: "Groceries",
+      date: "Sep 3",
+    },
+    {
+      id: 2,
+      name: "Chick-Fil-A",
+      amount: 75.34,
+      category: "Restaurants",
+      date: "Jan 2",
+    },
+    {
+      id: 3,
+      name: "AT&T",
+      amount: 289.56,
+      category: "Utilities",
+      date: "Mar 7",
+    },
+    {
+      id: 4,
+      name: "Rent",
+      amount: 723.0,
+      category: "Housing",
+      date: "April 9",
+    },
+  ];
 router
     .route("/")
     .get((req, res)=> {
+        console.log(res.json(expenses))
         res.json(expenses)
     })
     .post((req, res)=> {
