@@ -1,6 +1,8 @@
 import React from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { Table as BTable } from "react-bootstrap";
 import useGetExpenses from "../hooks/useGetExpenses";
+import AddExpenseForm from "./AddExpenseForm";
 import {
   Column,
   ColumnDef,
@@ -16,15 +18,35 @@ import {
 
 function ExpenseTable() {
   const { data, error, isLoading } = useGetExpenses();
-  const [expense, setExpense] = React.useState(data);
+  const [expense, setExpense] = React.useState([]);
+
+  React.useEffect(() => {
+    if (data) {
+      setExpense(data);
+    }
+  }, [data]);
   const [columnFilters, setColumnFilters] = React.useState([]);
-  console.log(expense);
+  const [showModal, setShowModal] = React.useState(false);
+  const openExpenseForm = () => setShowModal(true);
+  const closeExpenseForm = () => setShowModal(false);
+
   const columns = React.useMemo(
     () => [
       {
         accessorKey: "id",
-        header: " ",
-        cell: (info) => info.getValue(),
+        header: () => (
+          <button
+            type="button"
+            className="btn"
+            onClick={() => {
+              openExpenseForm();
+            }}
+          >
+            <i className="bi bi-plus-circle"></i>
+          </button>
+        ),
+        cell: (info) => <i className="bi bi-pencil"></i>,
+        enableSorting: false,
         enableColumnFilter: false,
       },
       {
@@ -35,7 +57,7 @@ function ExpenseTable() {
       },
       {
         accessorKey: "amount",
-        header: () => "Amount",
+        header: "Amount",
         meta: {
           filterVariant: "range",
         },
@@ -56,7 +78,7 @@ function ExpenseTable() {
   );
 
   const table = useReactTable({
-    data: expense || [],
+    data: expense,
     columns,
     filterFns: {},
     state: {
@@ -66,7 +88,7 @@ function ExpenseTable() {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
     debugHeaders: true,
     debugColumns: false,
@@ -132,6 +154,7 @@ function ExpenseTable() {
           })}
         </tbody>
       </BTable>
+      <AddExpenseForm openExpenseForm={showModal} closeExpenseForm={closeExpenseForm} />
     </div>
   );
 }
@@ -172,9 +195,16 @@ function Filter({ column }) {
     >
       {/* See faceted column filters example for dynamic select options */}
       <option value="">All</option>
+      <option value="Automotive">Automotive</option>
+      <option value="Bills & Utilities">Bills & Utilities</option>
+      <option value="Entertainment">Entertainment</option>
+      <option value="Food & Drink">Food & Drink</option>
+      <option value="Gifts & Donations">Gifts & Donations</option>
       <option value="Groceries">Groceries</option>
-      <option value="Housing">Housing</option>
-      <option value="Utilities">Utilities</option>
+      <option value="Health & Wellness">Health & Wellness</option>
+      <option value="Home">Home</option>
+      <option value="Miscellaneous">Miscellaneous</option>
+      <option value="Travel">Travel</option>
     </select>
   ) : (
     <DebouncedInput
