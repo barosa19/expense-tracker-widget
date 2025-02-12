@@ -3,6 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { Table as BTable } from "react-bootstrap";
 import useGetExpenses from "../hooks/useGetExpenses";
 import AddExpenseForm from "./AddExpenseForm";
+import FilterTable from "./FilterTable";
 import {
   Column,
   ColumnDef,
@@ -54,17 +55,19 @@ function ExpenseTable() {
         id: "name",
         cell: (info) => info.getValue(),
         header: () => <span>Name</span>,
+        enableColumnFilter: false,
       },
       {
         accessorKey: "amount",
         header: "Amount",
-        meta: {
-          filterVariant: "range",
-        },
+        enableColumnFilter: false,
+        // meta: {
+        //   filterVariant: "range",
+        // },
       },
       {
         accessorKey: "category",
-        header: "Category",
+        header: "",
         meta: {
           filterVariant: "select",
         },
@@ -72,6 +75,7 @@ function ExpenseTable() {
       {
         accessorKey: "date",
         header: "Date",
+        enableColumnFilter: false,
       },
     ],
     []
@@ -105,28 +109,18 @@ function ExpenseTable() {
                   <th key={header.id} colSpan={header.colSpan}>
                     {header.isPlaceholder ? null : (
                       <>
-                        <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
+                        <div {...{ className: header.column.getCanSort() ? "cursor-pointer select-none" : ""}}
                         >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                          {{
-                            asc: " 🔼",
-                            desc: " 🔽",
-                          }[header.column.getIsSorted()] ?? null}
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+
+                          {header.column.getCanFilter() ? (<FilterTable column={header.column} />) : null}
+                          {"  "}
+                          {header.column.getCanSort() && !header.column.getIsSorted() 
+                          ? (<i className="bi bi-arrow-down-up" onClick={header.column.getToggleSortingHandler()}></i>) 
+                          : header.column.getIsSorted() === 'asc' ? (<i className="bi bi-arrow-up" onClick={header.column.getToggleSortingHandler()}></i>) 
+                          : header.column.getIsSorted() === 'desc' ? (<i className="bi bi-arrow-down" onClick={header.column.getToggleSortingHandler()}></i>) : null}
+
                         </div>
-                        {header.column.getCanFilter() ? (
-                          <div>
-                            <Filter column={header.column} />
-                          </div>
-                        ) : null}
                       </>
                     )}
                   </th>
@@ -141,12 +135,7 @@ function ExpenseTable() {
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
+                    <td key={cell.id}>{flexRender( cell.column.columnDef.cell, cell.getContext())}</td>
                   );
                 })}
               </tr>
@@ -156,95 +145,6 @@ function ExpenseTable() {
       </BTable>
       <AddExpenseForm openExpenseForm={showModal} closeExpenseForm={closeExpenseForm} />
     </div>
-  );
-}
-
-function Filter({ column }) {
-  const columnFilterValue = column.getFilterValue();
-  const { filterVariant } = column.columnDef.meta ?? {};
-
-  return filterVariant === "range" ? (
-    <div>
-      <div className="flex space-x-2">
-        {/* See faceted column filters example for min max values functionality */}
-        <DebouncedInput
-          type="number"
-          value={columnFilterValue?.[0] ?? ""}
-          onChange={(value) =>
-            column.setFilterValue((old) => [value, old?.[1]])
-          }
-          placeholder={`Min`}
-          className="w-12 border shadow rounded"
-        />
-        <DebouncedInput
-          type="number"
-          value={columnFilterValue?.[1] ?? ""}
-          onChange={(value) =>
-            column.setFilterValue((old) => [old?.[0], value])
-          }
-          placeholder={`Max`}
-          className="w-12 border shadow rounded"
-        />
-      </div>
-      <div className="h-1" />
-    </div>
-  ) : filterVariant === "select" ? (
-    <select
-      onChange={(e) => column.setFilterValue(e.target.value)}
-      value={columnFilterValue?.toString()}
-    >
-      {/* See faceted column filters example for dynamic select options */}
-      <option value="">All</option>
-      <option value="Automotive">Automotive</option>
-      <option value="Bills & Utilities">Bills & Utilities</option>
-      <option value="Entertainment">Entertainment</option>
-      <option value="Food & Drink">Food & Drink</option>
-      <option value="Gifts & Donations">Gifts & Donations</option>
-      <option value="Groceries">Groceries</option>
-      <option value="Health & Wellness">Health & Wellness</option>
-      <option value="Home">Home</option>
-      <option value="Miscellaneous">Miscellaneous</option>
-      <option value="Travel">Travel</option>
-    </select>
-  ) : (
-    <DebouncedInput
-      className="w-36 border shadow rounded"
-      onChange={(value) => column.setFilterValue(value)}
-      placeholder={`Search...`}
-      type="text"
-      value={columnFilterValue ?? ""}
-    />
-    // See faceted column filters example for datalist search suggestions
-  );
-}
-
-// A typical debounced input react component
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <input
-      {...props}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
   );
 }
 
