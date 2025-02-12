@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import useCreateExpense from "../hooks/useCreateExpense";
+import categories from '../data/categories.js'
 
 const AddExpenseForm = ({ openExpenseForm, closeExpenseForm }) => {
   const [formData, setFormData] = React.useState({
@@ -52,16 +53,7 @@ const AddExpenseForm = ({ openExpenseForm, closeExpenseForm }) => {
           <Form.Label>Category</Form.Label>
           <Form.Select name="category" value={formData.category} onChange={handleChange} required>
             <option>Choose...</option>
-            <option>Automotive</option>
-            <option>Bills & Utilities</option>
-            <option>Entertainment</option>
-            <option>Food & Drink</option>
-            <option>Gifts & Donations</option>
-            <option>Groceries</option>
-            <option>Health & Wellness</option>
-            <option>Home</option>
-            <option>Miscellaneous</option>
-            <option>Travel</option>
+            {categories.map(category => <option key={category}>{category}</option>)}
           </Form.Select>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formDate">

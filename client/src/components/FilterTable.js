@@ -1,4 +1,5 @@
 import React from "react";
+import categories from '../data/categories'
 
 function FilterTable({ column }) {
     const columnFilterValue = column.getFilterValue();
@@ -33,17 +34,8 @@ function FilterTable({ column }) {
         onChange={(e) => column.setFilterValue(e.target.value)}
         value={columnFilterValue?.toString()}
       >
-        <option value="">All Categories</option>
-        <option value="Automotive">Automotive</option>
-        <option value="Bills & Utilities">Bills & Utilities</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Food & Drink">Food & Drink</option>
-        <option value="Gifts & Donations">Gifts & Donations</option>
-        <option value="Groceries">Groceries</option>
-        <option value="Health & Wellness">Health & Wellness</option>
-        <option value="Home">Home</option>
-        <option value="Miscellaneous">Miscellaneous</option>
-        <option value="Travel">Travel</option>
+        <option value="">All</option>
+        {categories.map(category => <option value={category}>{category}</option>)}
       </select>
     ) : (
       <DebouncedInput

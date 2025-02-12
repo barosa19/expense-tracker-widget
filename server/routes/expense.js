@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
+const categories =require('../data/categories')
 
 let expenses = [
     {
@@ -14,7 +15,7 @@ let expenses = [
       id: 2,
       name: "Chick-Fil-A",
       amount: 12.99,
-      category: "Food & Drink",
+      category: "Groceries",
       date: "2025-02-28",
     },
     {
@@ -32,6 +33,47 @@ let expenses = [
       date: "2025-01-01",
     },
   ];
+// router
+//   .route("/category/:category")
+//   .get((req, res)=> {
+//       let sum = 0
+//       expenses = expenses.filter(expense => expense.category == req.params.category);
+//       console.log(expenses)
+//       expenses.forEach(expense => sum += expense.amount)
+//       res.json(sum)
+//   })
+router
+  .route("/category/")
+  .get((req, res)=> {
+      let pieChartData = []
+      categories.forEach(
+        (category) => {
+          let sum = 0
+          const filteredExpenses = expenses.filter(expense => expense.category == category);
+          filteredExpenses.forEach(expense => sum += expense.amount)
+          pieChartData.push({category:category, sum: sum})
+        })
+      console.log(pieChartData)
+      res.json(pieChartData)
+  })
+router
+  .route("/:id")
+  .get((req, res)=> {
+      res.json(req.expense)
+  })
+  .delete((req, res)=> {
+      expenses = expenses.filter(expense => expense.id !== req.params.id);
+      res.json(expenses)
+  })
+  router.param("id", (req, res, next, id) => {
+      
+      const expense = expenses.find(expense => expense.id == id);
+  if (!expense) {
+      return res.status(404).json({ message: "Expense not found" });
+  }
+      req.expense = expense
+      next()
+  })
 router
     .route("/")
     .get((req, res)=> {
@@ -51,24 +93,5 @@ router
         res.status(201).json(newExpense)
     })
 
-router
-    .route("/:id")
-    .get((req, res)=> {
-        res.json(req.expense)
-    })
-    .delete((req, res)=> {
-        expenses = expenses.filter(expense => expense.id !== req.params.id);
-        res.json(expenses)
-    })
-
-    router.param("id", (req, res, next, id) => {
-        const expense = expenses.find(expense => expense.id === id);
-
-    if (!expense) {
-        return res.status(404).json({ message: "Expense not found" });
-    }
-        req.expense = expense
-        next()
-    })
 
 module.exports = router
