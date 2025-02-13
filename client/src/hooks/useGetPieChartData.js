@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-function useGetExpenseTypesTotal() {
+function useGetPieChartData() {
   return useQuery({
-    queryKey: ['category'],
+    queryKey: ['pieChartData'],
     queryFn: async () => {
       const response = await fetch(`http://localhost:3002/expense/category`);
       if (!response.ok) {
@@ -13,4 +13,4 @@ function useGetExpenseTypesTotal() {
   });
 }
 
-export default useGetExpenseTypesTotal;
+export default useGetPieChartData;

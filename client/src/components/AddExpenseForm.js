@@ -10,7 +10,7 @@ const AddExpenseForm = ({ openExpenseForm, closeExpenseForm }) => {
     name: "",
     amount: "",
     category: "Choose...",
-    date: "",
+    date: new Date(),
   });
 
   const addExpense = useCreateExpense()
@@ -23,15 +23,15 @@ const AddExpenseForm = ({ openExpenseForm, closeExpenseForm }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addExpense.mutate(formData, {
+    addExpense.mutate({...formData, date: new Date(formData.date)}, {
       onSuccess: () => {
-        setFormData({ name: "", amount:"", category: "", date: "" })
+        setFormData({ name: "", amount:"", category: "", date: new Date() })
         closeExpenseForm();
       },
     });
   };
   const handleClose = () => {
-    setFormData({ name: "", amount:"", category: "", date: "" })
+    setFormData({ name: "", amount:"", category: "", date: new Date() })
     closeExpenseForm();
   };
   return (
@@ -46,8 +46,9 @@ const AddExpenseForm = ({ openExpenseForm, closeExpenseForm }) => {
         <Form.Control type="text" placeholder="Enter expense name" name="name" value={formData.name}  onChange={handleChange} required/>
       </Form.Group>
       <InputGroup className="mb-3">
-        <InputGroup.Text>$</InputGroup.Text>
+        <InputGroup.Text>NOK</InputGroup.Text>
         <Form.Control aria-label="amount" name="amount" type="number" value={formData.amount}  onChange={handleChange} min="0" step="0.01" required/>
+        <InputGroup.Text>,00</InputGroup.Text>
       </InputGroup>
       <Form.Group controlId="formCategory">
           <Form.Label>Category</Form.Label>

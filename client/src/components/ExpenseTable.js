@@ -23,7 +23,17 @@ function ExpenseTable() {
 
   React.useEffect(() => {
     if (data) {
-      setExpense(data);
+      const formatedData = data.map(
+        (expense)=>{
+          
+          return {
+            ...expense,
+            amount: `NOK ${expense.amount}`,
+            // date: date
+          }
+      })
+      console.log(formatedData)
+      setExpense(formatedData);
     }
   }, [data]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -76,6 +86,7 @@ function ExpenseTable() {
         accessorKey: "date",
         header: "Date",
         enableColumnFilter: false,
+        sortingFN: 'datetime'
       },
     ],
     []

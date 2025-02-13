@@ -2,37 +2,8 @@ const express = require("express")
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
 const categories =require('../data/categories')
+const expenses = require('../data/expenses')
 
-let expenses = [
-    {
-      id: 1,
-      name: "Publix",
-      amount: 83.47,
-      category: "Groceries",
-      date: "2025-01-11",
-    },
-    {
-      id: 2,
-      name: "Chick-Fil-A",
-      amount: 12.99,
-      category: "Groceries",
-      date: "2025-02-28",
-    },
-    {
-      id: 3,
-      name: "AT&T",
-      amount: 289.56,
-      category: "Bills & Utilities",
-      date: "2024-12-01",
-    },
-    {
-      id: 4,
-      name: "Rent",
-      amount: 723.0,
-      category: "Home",
-      date: "2025-01-01",
-    },
-  ];
 // router
 //   .route("/category/:category")
 //   .get((req, res)=> {

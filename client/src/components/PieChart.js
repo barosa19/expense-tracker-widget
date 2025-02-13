@@ -1,11 +1,11 @@
 import React from "react";
 import {Chart as ChartJS} from "chart.js/auto";
 import {Doughnut} from "react-chartjs-2"
-import useGetExpenseTypeTotal from '../hooks/useGetExpenseTypesTotal'
+import useGetPieChartData from '../hooks/useGetPieChartData'
 import colors from '../data/colors'
 
 function PieChart() {
-  const { data, error, isLoading } = useGetExpenseTypeTotal();
+  const { data, error, isLoading } = useGetPieChartData();
   const [pieChartData, setPieChartData] = React.useState([]);
   
   React.useEffect(() => {
@@ -17,8 +17,8 @@ function PieChart() {
   }, [data]);
 
   return (
-    <div className="w-25">
-      <Doughnut
+    <div className="container">
+      <Doughnut className="mx-auto"
         data = {{
             labels: pieChartData.map((item) => item.category),
             datasets: [
@@ -32,7 +32,8 @@ function PieChart() {
         options={{
           plugins: {
               legend: {
-                  display: false
+                  position: 'right',
+                  display: true
               }
           }
       }}
