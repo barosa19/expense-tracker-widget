@@ -8,3 +8,11 @@
 .bg-Home-custom { background-color: rgb(0, 200, 83) !important; }
 .bg-Miscellaneous-custom { background-color:rgb(255, 193, 7) !important; }
 .bg-Travel-custom { background-color:rgb(200, 150, 255) !important; }
+
+.bg-spacing {
+    padding-left: .75rem;
+    padding-right: .75rem;
+    padding-top: .3rem;
+    padding-bottom: .3rem;
+    border-radius: .5rem;
+}

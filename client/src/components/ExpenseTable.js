@@ -35,29 +35,9 @@ function ExpenseTable() {
     }
   }, [data]);
   const [columnFilters, setColumnFilters] = React.useState([]);
-  const [showModal, setShowModal] = React.useState(false);
-  const openExpenseForm = () => setShowModal(true);
-  const closeExpenseForm = () => setShowModal(false);
 
   const columns = React.useMemo(
     () => [
-      {
-        accessorKey: "id",
-        header: () => (
-          <button
-            type="button"
-            className="btn"
-            onClick={() => {
-              openExpenseForm();
-            }}
-          >
-            <i className="bi bi-plus-circle white"></i>
-          </button>
-        ),
-        cell: (info) => <i className="bi bi-pencil"></i>,
-        enableSorting: false,
-        enableColumnFilter: false,
-      },
       {
         accessorKey: "date",
         header: "Date",
@@ -109,9 +89,9 @@ function ExpenseTable() {
 
   return (
     <div className="container ">
-      <div className="border border-5 rounded-4 table-responsive">
-      <table className="mx-auto table table-striped">
-        <thead>
+      <div className="border border-5 rounded-4 table-responsive mx-auto">
+      <table className=" table table-striped table-hover">
+        <thead className="px-2">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -157,7 +137,7 @@ function ExpenseTable() {
                     return (
                       <td key={cell.id}>
                         <div >
-                          <text className={`bg-${cell.getValue().split(" ")[0]}-custom text-white px-2 py-1 rounded-3`}>{cell.getValue()}</text>
+                          <text className={`bg-${cell.getValue().split(" ")[0]}-custom text-white bg-spacing `}>{cell.getValue()}</text>
                         </div>
                         
                       </td>
@@ -173,7 +153,6 @@ function ExpenseTable() {
         </tbody>
       </table>
       </div>
-      <AddExpenseForm openExpenseForm={showModal} closeExpenseForm={closeExpenseForm} />
     </div>
   );
 }

@@ -17,8 +17,8 @@ function PieChart() {
   }, [data]);
 
   return (
-    <div className="container">
-      <Doughnut className="mx-auto w-50 h-50"
+    <div className="container " > 
+      <Doughnut className="mx-auto my-3" 
         data = {{
             labels: pieChartData.map((item) => item.category),
             datasets: [
@@ -27,18 +27,24 @@ function PieChart() {
                     data: pieChartData.map((item) => item.sum),
                     backgroundColor: colors.map((color) => color),
                     borderWidth: 3,
-                    borderColor:"RGB( 168, 213, 186)"
+                    borderColor:"RGB(2, 17, 36)"
                     
                 }]
         }}
         options={{
           plugins: {
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem) => {
+                  let value = tooltipItem.raw;
+                  return `Total: NOK ${value}`; 
+                },
+              },
+            },
               legend: {
-                  position: 'right',
-                  display: true
+                  display: false,
               }
-          }
-      }}
+          }}}
         />
     </div>
   );
