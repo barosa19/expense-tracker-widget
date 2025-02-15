@@ -152,6 +152,48 @@ function ExpenseTable() {
           })}
         </tbody>
       </table>
+      <div className="flex items-center gap-2 pb-2">
+        <button
+          className="border rounded btn-light"
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <i className="bi bi-rewind-fill" ></i>
+        </button>
+        <button
+          className="border rounded btn-light"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <i className="bi bi-caret-left-fill"></i>
+        </button>
+        <select className="border rounded btn-light mx-2 mb-2"
+          value={table.getState().pagination.pageSize}
+          onChange={e => {
+            table.setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+        <button
+          className="border rounded btn-light"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <i className="bi bi-caret-right-fill"></i>
+        </button>
+        <button
+          className="border rounded btn-light"
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          <i className="bi bi-fast-forward-fill"></i>
+        </button>
+      </div>
       </div>
     </div>
   );
