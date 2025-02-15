@@ -1,6 +1,6 @@
 import React from "react";
 import {Chart as ChartJS} from "chart.js/auto";
-import {Doughnut} from "react-chartjs-2"
+import {Doughnut, Pie} from "react-chartjs-2"
 import useGetPieChartData from '../hooks/useGetPieChartData'
 import colors from '../data/colors'
 
@@ -18,7 +18,7 @@ function PieChart() {
 
   return (
     <div className="container">
-      <Doughnut className="mx-auto"
+      <Doughnut className="mx-auto w-50 h-50"
         data = {{
             labels: pieChartData.map((item) => item.category),
             datasets: [
@@ -26,7 +26,9 @@ function PieChart() {
                     label: "Total",
                     data: pieChartData.map((item) => item.sum),
                     backgroundColor: colors.map((color) => color),
-                    borderRadius: 5
+                    borderWidth: 3,
+                    borderColor:"RGB( 168, 213, 186)"
+                    
                 }]
         }}
         options={{
