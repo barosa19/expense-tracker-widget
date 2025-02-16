@@ -47,7 +47,7 @@ function ExpenseTable() {
       {
         accessorKey: "name",
         id: "name",
-        header: "Header",
+        header: "Name",
         enableColumnFilter: false,
       },
       {
@@ -61,7 +61,7 @@ function ExpenseTable() {
       {
         accessorKey: "amount",
         header: "Amount",
-        cell: (props) => <span className="text-end">NOK ${props.getValue()}</span>,
+        cell: (props) => <span className="text-end">NOK {props.getValue()}</span>,
         enableColumnFilter: false,
       }
     ],
