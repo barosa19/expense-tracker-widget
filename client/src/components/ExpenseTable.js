@@ -4,6 +4,7 @@ import useGetExpenses from "../hooks/useGetExpenses";
 import AddExpenseForm from "./AddExpenseForm";
 import FilterTable from "./FilterTable";
 import "../color.css"
+import Spinner from 'react-bootstrap/Spinner';
 import {
   Column,
   ColumnDef,
@@ -23,15 +24,7 @@ function ExpenseTable() {
 
   React.useEffect(() => {
     if (data) {
-      const formatedData = data.map(
-        (expense)=>{
-          return {
-            ...expense,
-            amount: `NOK ${expense.amount}`
-          }
-      })
-      console.log(formatedData)
-      setExpense(formatedData);
+      setExpense(data);
     }
   }, [data]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -41,19 +34,26 @@ function ExpenseTable() {
       {
         accessorKey: "date",
         header: "Date",
+        cell: (props) => {
+          const date = new Date(props.getValue())
+          return (
+            <span key={props.id} value={props.getValue()}>{date.toLocaleDateString("en-GB", {  
+              day: "2-digit", month: "short", year: "numeric"})}</span>
+          );
+        },
         enableColumnFilter: false,
         sortingFN: 'datetime'
       },
       {
         accessorKey: "name",
         id: "name",
-        cell: (info) => info.getValue(),
-        header: () => <span>Name</span>,
+        header: "Header",
         enableColumnFilter: false,
       },
       {
         accessorKey: "category",
         header: "",
+        cell: (props) => <span className={`bg-${props.getValue().split(" ")[0]}-custom bg-spacing `}>{props.getValue()}</span>,
         meta: {
           filterVariant: "select",
         },
@@ -61,14 +61,13 @@ function ExpenseTable() {
       {
         accessorKey: "amount",
         header: "Amount",
+        cell: (props) => <span className="text-end">NOK ${props.getValue()}</span>,
         enableColumnFilter: false,
-        // meta: {
-        //   filterVariant: "range",
-        // }
       }
     ],
     []
   );
+
 
   const table = useReactTable({
     data: expense,
@@ -76,6 +75,14 @@ function ExpenseTable() {
     filterFns: {},
     state: {
       columnFilters,
+    },
+    initialState: {
+      sorting: [
+        {
+          id: 'date',
+          desc: true, 
+        },
+      ],
     },
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -124,25 +131,6 @@ function ExpenseTable() {
             return (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
-                  if (cell.id.includes("date")){
-                    const date = new Date(cell.getValue())
-                    return (
-                      <td key={cell.id} value={cell.getValue()}>{date.toLocaleDateString("en-GB", {  
-                        day: "2-digit", month: "short", year: "numeric"})}</td>
-                    );
-                  }
-                  if (cell.id.includes("category")){
-                    const date = new Date(cell.getValue())
-                    console.log(cell.getValue().split(" ")[0])
-                    return (
-                      <td key={cell.id}>
-                        <div >
-                          <text className={`bg-${cell.getValue().split(" ")[0]}-custom text-white bg-spacing `}>{cell.getValue()}</text>
-                        </div>
-                        
-                      </td>
-                    );
-                  }
                   return (
                     <td key={cell.id}>{flexRender( cell.column.columnDef.cell, cell.getContext())}</td>
                   );

@@ -15,7 +15,7 @@ const Legend = () => {
         <div className={`collapse ${isOpen ? 'show d-flex justify-content-center flex-wrap mx-4' : ''} `}>
           {categories.map((category)=>{
             return (
-                <text className={`bg-${category.split(" ")[0]}-custom text-white bg-spacing mx-2 my-2`}>{category}</text>
+                <text className={`bg-${category.split(" ")[0]}-custom bg-spacing mx-2 my-2`}>{category}</text>
             )
           })}
         </div>
