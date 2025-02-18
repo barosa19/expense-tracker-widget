@@ -4,6 +4,7 @@ import {Doughnut, Pie} from "react-chartjs-2"
 import useGetPieChartData from '../hooks/useGetPieChartData'
 import colors from '../data/colors'
 import {GlobalContext} from "../contexts/GlobalContext"
+import { Spinner } from "react-bootstrap";
 
 function PieChart() {
   const { darkMode } = React.useContext(GlobalContext);
@@ -16,6 +17,22 @@ function PieChart() {
     }
   }, [data]);
 
+  if (isLoading) {
+    return (
+      <div className={`text-center ${darkMode ? "text-light" : "text-dark"}`}>
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-danger">
+        <p>Failed to load expenses: {error.message}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container" data-bs-theme={darkMode ? "dark" : "light"}> 
       <Doughnut className="mx-auto my-3" 
@@ -27,7 +44,7 @@ function PieChart() {
                     data: pieChartData.map((item) => item.sum),
                     backgroundColor: colors.map((color) => color),
                     borderWidth: 3,
-                    borderColor:"RGB(2, 17, 36)"
+                    borderColor:"RGB(33, 37, 41)"
                     
                 }]
         }}

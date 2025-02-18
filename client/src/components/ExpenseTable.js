@@ -7,10 +7,6 @@ import "../color.css"
 import Spinner from 'react-bootstrap/Spinner';
 import { GlobalContext } from "../contexts/GlobalContext";
 import {
-  Column,
-  ColumnDef,
-  ColumnFiltersState,
-  RowData,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -20,16 +16,18 @@ import {
 } from "@tanstack/react-table";
 
 function ExpenseTable() {
-  const { darkMode, showModal, setShowModal } = React.useContext(GlobalContext)
-  const { status, data, error, isLoading } = useGetExpenses();
+  const { darkMode, setShowModal } = React.useContext(GlobalContext)
+  const { data, error, isLoading } = useGetExpenses();
   const [expense, setExpense] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
+
   React.useEffect(() => {
     if (data) {
       setExpense(data);
       setShowModal(false)
     }
   }, [data]);
+
 
   const columns = React.useMemo(
     () => [
@@ -95,12 +93,21 @@ function ExpenseTable() {
     debugColumns: false,
   });
 
-  // if (status === 'pending') {
-  //   return <span>Loading</span>
-  // } else if (status === 'error') {
-  //   return <span>Error: {error.message}</span>
-  // } 
+  if (isLoading) {
+    return (
+      <div className={`text-center ${darkMode ? "text-light" : "text-dark"}`}>
+        <Spinner animation="border" />
+      </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div className="text-center text-danger">
+        <p>Failed to load expenses: {error.message}</p>
+      </div>
+    );
+  }
   if (data?.length == 0){
     setShowModal(true)
     return <AddExpenseForm></AddExpenseForm>
