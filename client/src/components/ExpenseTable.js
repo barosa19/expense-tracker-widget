@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetExpenses from "../hooks/useGetExpenses";
 import AddExpenseForm from "./AddExpenseForm";
 import FilterTable from "./FilterTable";
-import "../color.css"
+import "../categories.css"
 import Spinner from 'react-bootstrap/Spinner';
 import { GlobalContext } from "../contexts/GlobalContext";
 import {
@@ -53,7 +53,7 @@ function ExpenseTable() {
       {
         accessorKey: "category",
         header: "",
-        cell: (props) => <span className={`bg-${props.getValue().split(" ")[0]}-custom bg-spacing `}>{props.getValue()}</span>,
+        cell: (props) => <text className={`bg-${props.getValue().split(" ")[0]}-custom bg-spacing `}>{props.getValue()}</text>,
         meta: {
           filterVariant: "select",
         },
@@ -161,14 +161,14 @@ function ExpenseTable() {
       </table>
       <div className="flex items-center gap-2 pb-2">
         <button
-          className="border rounded btn-light"
+          className={`border rounded ${darkMode ? "bg-light text-dark" : "bg-dark text-light"}`}
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
         >
           <i className="bi bi-rewind-fill" ></i>
         </button>
         <button
-          className="border rounded btn-light"
+          className={`border rounded ${darkMode ? "bg-light text-dark" : "bg-dark text-light"}`}
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -187,14 +187,14 @@ function ExpenseTable() {
           ))}
         </select>
         <button
-          className="border rounded btn-light"
+          className={`border rounded ${darkMode ? "bg-light text-dark" : "bg-dark text-light"}`}
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
           <i className="bi bi-caret-right-fill"></i>
         </button>
         <button
-          className="border rounded btn-light"
+          className={`border rounded ${darkMode ? "bg-light text-dark" : "bg-dark text-light"}`}
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
         >

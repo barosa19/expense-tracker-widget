@@ -5,7 +5,6 @@ const useCreateExpense = () => {
 
   return useMutation({
     mutationFn: async (newExpense) => {
-      console.log(newExpense)
       const response = await fetch("http://localhost:3002/expense", {
         method: "POST",
         headers: {
@@ -13,7 +12,6 @@ const useCreateExpense = () => {
         },
         body: JSON.stringify(newExpense),
       });
-      console.log(response.body)
       if (!response.ok) {
         throw new Error("Failed to add expense");
       }
