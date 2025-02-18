@@ -5,6 +5,7 @@ import AddExpenseForm from "./AddExpenseForm";
 import FilterTable from "./FilterTable";
 import "../color.css"
 import Spinner from 'react-bootstrap/Spinner';
+import { GlobalContext } from "../contexts/GlobalContext";
 import {
   Column,
   ColumnDef,
@@ -19,15 +20,16 @@ import {
 } from "@tanstack/react-table";
 
 function ExpenseTable() {
-  const { data, error, isLoading } = useGetExpenses();
+  const { darkMode, showModal, setShowModal } = React.useContext(GlobalContext)
+  const { status, data, error, isLoading } = useGetExpenses();
   const [expense, setExpense] = React.useState([]);
-
+  const [columnFilters, setColumnFilters] = React.useState([]);
   React.useEffect(() => {
     if (data) {
       setExpense(data);
+      setShowModal(false)
     }
   }, [data]);
-  const [columnFilters, setColumnFilters] = React.useState([]);
 
   const columns = React.useMemo(
     () => [
@@ -68,7 +70,6 @@ function ExpenseTable() {
     []
   );
 
-
   const table = useReactTable({
     data: expense,
     columns,
@@ -94,8 +95,19 @@ function ExpenseTable() {
     debugColumns: false,
   });
 
+  // if (status === 'pending') {
+  //   return <span>Loading</span>
+  // } else if (status === 'error') {
+  //   return <span>Error: {error.message}</span>
+  // } 
+
+  if (data?.length == 0){
+    setShowModal(true)
+    return <AddExpenseForm></AddExpenseForm>
+  }
+
   return (
-    <div className="container ">
+    <div className="container " data-bs-theme={darkMode ? "dark" : "light"}>
       <div className="border border-5 rounded-4 table-responsive mx-auto">
       <table className=" table table-striped table-hover">
         <thead className="px-2">

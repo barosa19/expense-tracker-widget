@@ -1,14 +1,16 @@
 import React from "react";
 import categories from "../data/categories";
+import {GlobalContext} from "../contexts/GlobalContext"
 
 const Legend = () => {
     const [isOpen, setIsOpen] = React.useState(false);
-  
+    const { darkMode } = React.useContext(GlobalContext);
     const toggleCollapse = () => setIsOpen(!isOpen);
   
     return (
-      <div className="d-inline mx-2">
-        <button className="btn btn-light my-2 fw-bold" onClick={toggleCollapse}>
+      <div className="d-inline mx-2" data-bs-theme={darkMode ? "dark" : "light"}>
+        <button className={`btn my-2 fw-bold ${darkMode ? "bg-light text-dark" : "bg-dark text-light"}`} 
+          onClick={toggleCollapse}>
             <text>Legend </text>
             <i className="bi bi-caret-down-square-fill"></i>
         </button>

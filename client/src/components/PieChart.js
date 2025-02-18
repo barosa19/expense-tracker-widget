@@ -3,21 +3,21 @@ import {Chart as ChartJS} from "chart.js/auto";
 import {Doughnut, Pie} from "react-chartjs-2"
 import useGetPieChartData from '../hooks/useGetPieChartData'
 import colors from '../data/colors'
+import {GlobalContext} from "../contexts/GlobalContext"
 
 function PieChart() {
+  const { darkMode } = React.useContext(GlobalContext);
   const { data, error, isLoading } = useGetPieChartData();
   const [pieChartData, setPieChartData] = React.useState([]);
   
   React.useEffect(() => {
     if (data) {
       setPieChartData(data);
-      console.log(data)
-      console.log(pieChartData)
     }
   }, [data]);
 
   return (
-    <div className="container " > 
+    <div className="container" data-bs-theme={darkMode ? "dark" : "light"}> 
       <Doughnut className="mx-auto my-3" 
         data = {{
             labels: pieChartData.map((item) => item.category),
