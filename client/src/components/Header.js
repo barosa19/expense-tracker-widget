@@ -19,7 +19,7 @@ function Header() {
           }}
         >
           <i className={darkMode ? "bi bi-moon-stars-fill" : "bi bi-sun-fill"}></i>
-          <text> {darkMode ? "Dark" : "Light"} </text>
+          {/* <text> {darkMode ? "Dark" : "Light"} </text> */}
         </button>
       </div>
     </div>
