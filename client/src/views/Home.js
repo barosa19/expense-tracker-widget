@@ -3,6 +3,7 @@ import PieChart from "../components/PieChart";
 import ExpenseTable from "../components/ExpenseTable";
 import Legend from "../components/Legend";
 import AddExpenseBtn from "../components/AddExpenseBtn";
+import LineChart from "../components/LineChart";
 
 function Home() {
   return (
@@ -14,6 +15,7 @@ function Home() {
         <Legend></Legend>
       </div>
       <ExpenseTable></ExpenseTable>
+      <LineChart></LineChart>
     </div>
   );
 }
