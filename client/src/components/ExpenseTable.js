@@ -3,7 +3,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetExpenses from "../hooks/useGetExpenses";
 import AddExpenseForm from "./AddExpenseForm";
 import FilterTable from "./FilterTable";
-import "../categories.css"
 import Spinner from 'react-bootstrap/Spinner';
 import { GlobalContext } from "../contexts/GlobalContext";
 import {
@@ -53,7 +52,7 @@ function ExpenseTable() {
       {
         accessorKey: "category",
         header: "",
-        cell: (props) => <text className={`bg-${props.getValue().split(" ")[0]}-custom bg-spacing `}>{props.getValue()}</text>,
+        cell: (props) => <text className={`${props.getValue().split(" ")[0]}-custom category-tag-spacing `}>{props.getValue()}</text>,
         meta: {
           filterVariant: "select",
         },

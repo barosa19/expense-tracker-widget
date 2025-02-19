@@ -48,7 +48,9 @@ const LineChart = () => {
         data: filterData.map((item) => item.sum),
         pointRadius: 0,
         backgroundColor: colors.map((color) => color),
-        borderColor: colors.map((color) => color)}
+        borderColor: colors.map((color) => color),
+        pointHoverRadius: 5,
+      }
     }),
     
   };
@@ -56,7 +58,15 @@ const LineChart = () => {
   const options = {
     responsive: true,
     plugins: {
-      legend: { position: "top" },
+      tooltip: {
+        // callbacks: {
+        //   label: (tooltipItem) => {
+        //     let value = tooltipItem.raw;
+        //     return `Total: NOK ${value}`; 
+        //   },
+        // }
+      },
+      legend: { display: false },
       title: { display: true, text: "Monthly Spending by Category(in 2025" },
     },
     scales: {
@@ -84,7 +94,10 @@ const LineChart = () => {
     );
   }
 
-  return <Line data={chartData} options={options} />;
+  return (
+    <div className="container">
+    <Line data={chartData} options={options} className="mx-auto my-3 w-50 h-50"/>
+    </div>)
 };
 
 export default LineChart;
